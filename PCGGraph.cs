@@ -9,6 +9,7 @@ using XNode;
 namespace PCGTool.Scripts {
     [CreateAssetMenu(menuName = "PCGTool/PCGGraph")]
     public class PCGGraph : NodeGraph {
+        // Main model node
         public PCGModelNode mainModel;
     }
 }

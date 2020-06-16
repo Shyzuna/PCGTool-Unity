@@ -92,6 +92,7 @@ namespace PCGTool.Scripts {
             TilemapRenderer tilemapRenderer = go.GetComponent<TilemapRenderer>();
             _tilemaps.Add(tilemap);
             
+            // Call the generate method of the main model node
             foreach (TileCaseStruct tcs in model.Generate(_seed)) {
                 tilemap.SetTile(tcs.position + offset, tcs.tile);
             }

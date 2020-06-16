@@ -42,6 +42,11 @@ namespace PCGTool.Scripts.Editor {
                     });
                 }
             }
+            
+            /*menu.AddItem(new GUIContent("Test Node"), false, () => {
+                CreateNode(typeof(TestNode), pos);
+            });*/
+            
             menu.AddSeparator("");
             menu.AddItem(new GUIContent("Preferences"), false, () => NodeEditorWindow.OpenPreferences());
             NodeEditorWindow.AddCustomContextMenuItems(menu, target);

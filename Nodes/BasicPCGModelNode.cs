@@ -15,8 +15,6 @@ namespace PCGTool.Scripts.Nodes {
             if (tmpSets != null) {
                 foreach (Tile[] set in tmpSets) {
                     foreach (Tile t in set) {
-                        //Debug.Log(t.name);
-                        //finalSet.Add(Resources.Load<Tile>("Tiles/" + t.name));
                         finalSet.Add(t);
                     }
                 }
@@ -28,7 +26,6 @@ namespace PCGTool.Scripts.Nodes {
             Random.InitState(seed);
             int size = finalSet.Count;
             TileCaseStruct tcs;
-            //Debug.Log(size);
             for (int i = 0; i < height; ++i) {
                 for (int j = 0; j < width; ++j) {
                     tcs = new TileCaseStruct();

@@ -7,16 +7,16 @@ using XNode;
 using XNodeEditor;
 
 namespace PCGTool.Scripts.Editor.NodesEditor {
-    [CustomNodeEditor(typeof(RangeTilesetNode))]
-    public class RangeTilesetNodeEditor : TilesetNodeEditor {
-        private RangeTilesetNode _rangeTilesetNode;
+    [CustomNodeEditor(typeof(DistributedTilesetNode))]
+    public class DistributedTilesetNodeEditor : TilesetNodeEditor {
+        private DistributedTilesetNode _distributedTilesetNode;
 
         private Dictionary<NodePort, int> _toRemove;
         private List<string> _toAdd;
 
         public override void OnCreate() {
-            if (_rangeTilesetNode == null) {
-                _rangeTilesetNode = (RangeTilesetNode) target;
+            if (_distributedTilesetNode == null) {
+                _distributedTilesetNode = (DistributedTilesetNode) target;
             }
             
             _toRemove = new Dictionary<NodePort, int>();
@@ -24,16 +24,15 @@ namespace PCGTool.Scripts.Editor.NodesEditor {
         }
 
         public override void OnBodyGUI() {
-            if (_rangeTilesetNode == null) {
-                _rangeTilesetNode = (RangeTilesetNode) target;
+            if (_distributedTilesetNode == null) {
+                _distributedTilesetNode = (DistributedTilesetNode) target;
             }
 
             bool dirty = false;
             // Remove PortNode To remove
             foreach (KeyValuePair<NodePort, int> del in _toRemove) {
-                _rangeTilesetNode.RemoveDynamicPort(del.Key);
-                _rangeTilesetNode.minValues.RemoveAt(del.Value);
-                _rangeTilesetNode.maxValues.RemoveAt(del.Value);
+                _distributedTilesetNode.RemoveDynamicPort(del.Key);
+                _distributedTilesetNode.distribution.RemoveAt(del.Value);
                 dirty = true;
             }
 
@@ -43,7 +42,7 @@ namespace PCGTool.Scripts.Editor.NodesEditor {
             }
 
             if (dirty) {
-                EditorUtility.SetDirty(_rangeTilesetNode);
+                EditorUtility.SetDirty(_distributedTilesetNode);
                 _toRemove.Clear();
                 _toAdd.Clear();
             }
@@ -55,14 +54,13 @@ namespace PCGTool.Scripts.Editor.NodesEditor {
 
             // Display PortNode Block
             int i = 0;
-            foreach (NodePort np in _rangeTilesetNode.DynamicInputs) {
+            foreach (NodePort np in _distributedTilesetNode.DynamicInputs) {
                 NodeEditorGUILayout.PortField(np);
                 if (GUILayout.Button("-", GUILayout.Width(50))) {
                     PlanRemoveTileInput(i, np);
                 }
                 EditorGUILayout.BeginVertical();
-                _rangeTilesetNode.minValues[i] = EditorGUILayout.TextField("Min", _rangeTilesetNode.minValues[i]);
-                _rangeTilesetNode.maxValues[i] = EditorGUILayout.TextField("Max", _rangeTilesetNode.maxValues[i]);
+                _distributedTilesetNode.distribution[i] = EditorGUILayout.TextField("Distribution", _distributedTilesetNode.distribution[i]);
                 EditorGUILayout.EndVertical();    
                 i++;
             }
@@ -75,19 +73,19 @@ namespace PCGTool.Scripts.Editor.NodesEditor {
             }
             EditorGUILayout.Space();
             EditorGUILayout.EndHorizontal();
+            
 
             NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("outTileset"));
-            
+
             serializedObject.ApplyModifiedProperties();
         }
 
         public void AddTileInput(string name) {
-            if (_rangeTilesetNode == null) {
-                _rangeTilesetNode = (RangeTilesetNode) target;
+            if (_distributedTilesetNode == null) {
+                _distributedTilesetNode = (DistributedTilesetNode) target;
             }
-            _rangeTilesetNode.AddDynamicInput(typeof(Tile), Node.ConnectionType.Override, Node.TypeConstraint.Strict, name);
-            _rangeTilesetNode.minValues.Add("0");
-            _rangeTilesetNode.maxValues.Add("0");
+            _distributedTilesetNode.AddDynamicInput(typeof(Tile), Node.ConnectionType.Override, Node.TypeConstraint.Strict, name);
+            _distributedTilesetNode.distribution.Add("0");
         }
 
         public void PlanRemoveTileInput(int id, NodePort np) {
@@ -95,9 +93,9 @@ namespace PCGTool.Scripts.Editor.NodesEditor {
         }
 
         public void PlanAddTileInput() {
-            string name = $"tile{_rangeTilesetNode.lastTileIndex}";
+            string name = $"tile{_distributedTilesetNode.lastTileIndex}";
             _toAdd.Add(name);
-            _rangeTilesetNode.lastTileIndex++;
+            _distributedTilesetNode.lastTileIndex++;
         }
 
         public void NodeUpdate(Node n) {

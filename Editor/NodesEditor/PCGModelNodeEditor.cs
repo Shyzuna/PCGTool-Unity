@@ -53,6 +53,7 @@ namespace PCGTool.Scripts.Editor.NodesEditor {
 
         public void NodeUpdate(Node n) {
             // Called when modification occurs
+            
         }
         
         public override void AddContextMenuItems(GenericMenu menu) {

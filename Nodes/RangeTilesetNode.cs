@@ -11,10 +11,10 @@ namespace PCGTool.Scripts.Nodes {
 
         public List<string> minValues = new List<string>();
         public List<string> maxValues = new List<string>();
-        public List<NodePort> tileFields = new List<NodePort>();
 
         public int lastTileIndex = 0;
 
+        // Output content formation
         public override object GetValue(NodePort port) {
             if (port.fieldName.Equals("outTileset")) {
                 List<TileRangeStruct> output = new List<TileRangeStruct>();
@@ -22,7 +22,7 @@ namespace PCGTool.Scripts.Nodes {
                 int minVal;
                 int maxVal;
                 Tile tile;
-                foreach (NodePort np in tileFields) {
+                foreach (NodePort np in DynamicInputs) {
                     if (!Int32.TryParse(maxValues[i], out maxVal)) {
                         Debug.LogWarning($"Invalid value (int : 0-100) for max range tileset : {np.fieldName}");
                         continue;

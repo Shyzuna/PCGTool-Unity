@@ -57,7 +57,8 @@ namespace PCGTool.Scripts.Nodes {
                 }
             }
         }
-
+        
+        // Tool method to check if a value is contained in a range
         public Tile CheckInsideRange(float val, List<TileRangeStruct> set) {
             foreach (TileRangeStruct trs in set) {
                 // Maybe do the division before
@@ -70,7 +71,7 @@ namespace PCGTool.Scripts.Nodes {
             return null;
         }
 
-        // Utilitary method to normalize noise array
+        // Tool method to normalize noise array
         private void NormalizeArray(float[,] arr) {
             float min = float.PositiveInfinity;
             float max = float.NegativeInfinity;
